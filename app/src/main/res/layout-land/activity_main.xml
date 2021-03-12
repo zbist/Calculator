@@ -3,37 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
+    android:layout_height="match_parent">
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/margin"
         android:text="@string/check_dark_mode"
-        android:textSize="@dimen/checkBox_text_size"/>
+        android:textSize="@dimen/checkBox_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/answer_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:gravity="end"
+        android:textSize="@dimen/answer_size"
+        app:layout_constraintStart_toEndOf="@id/grid"
+        app:layout_constraintTop_toTopOf="@id/grid"
+        tools:text="answer" />
 
     <GridLayout
         android:id="@+id/grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="4"
+        android:theme="@style/MyStyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:theme="@style/MyStyle">
-
-        <TextView
-            android:id="@+id/answer_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="4"
-            android:layout_gravity="fill"
-            android:gravity="end"
-            android:textSize="@dimen/answer_size"
-            tools:text="answer" />
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_del"
@@ -48,9 +47,9 @@
             android:layout_columnSpan="3"
             android:layout_gravity="fill"
             android:gravity="center"
+            android:maxLength="15"
             android:textSize="@dimen/text_view_size"
-            tools:text="text"
-            android:maxLength="15"/>
+            tools:text="text" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_1"

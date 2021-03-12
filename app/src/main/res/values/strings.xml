@@ -17,4 +17,5 @@
     <string name="_div">/</string>
     <string name="_sub">-</string>
     <string name="_del">C</string>
+    <string name="check_dark_mode">enable DarkMode</string>
 </resources>

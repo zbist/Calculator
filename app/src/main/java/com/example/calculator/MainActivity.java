@@ -12,6 +12,12 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String SaveAnswer = "ANSWER";
+    private static final String SaveText = "TEXT";
+    private static final String SaveCheckBox = "CHECKBOX";
+    private static final String SaveOperation = "OPERATION";
+    private static final String SavePoint = "POINT";
+
     private Calc calc = new Calc();
     private TextView answerView;
     private TextView textView;
@@ -26,13 +32,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle instanceState) {
-        super.onSaveInstanceState(instanceState);
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SaveAnswer, answerView.getText().toString());
+        outState.putString(SaveText, textView.getText().toString());
+        outState.putBoolean(SavePoint, hasPoint);
+        outState.putBoolean(SaveOperation, hasOperation);
     }
 
     @Override
-    protected void onRestoreInstanceState(@NonNull Bundle instanceState) {
-        super.onRestoreInstanceState(instanceState);
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        answerView.setText(savedInstanceState.getString(SaveAnswer));
+        textView.setText(savedInstanceState.getString(SaveText));
+        hasPoint = savedInstanceState.getBoolean(SavePoint);
+        hasOperation = savedInstanceState.getBoolean(SaveOperation);
     }
 
     private void init(){
