@@ -3,41 +3,67 @@ package com.example.calculator;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String SaveAnswer = "ANSWER";
+    private static final String SaveText = "TEXT";
+    private static final String SaveCheckBox = "CHECKBOX";
+    private static final String SaveOperation = "OPERATION";
+    private static final String SavePoint = "POINT";
+
     private Calc calc = new Calc();
     private TextView answerView;
     private TextView textView;
+    private MaterialCheckBox checkBox;
     private boolean hasOperation = false;
     private boolean hasPoint = false;
+    private boolean onDark = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getAppTheme()) setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_main);
         init();
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle instanceState) {
-        super.onSaveInstanceState(instanceState);
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SaveAnswer, answerView.getText().toString());
+        outState.putString(SaveText, textView.getText().toString());
+        outState.putBoolean(SavePoint, hasPoint);
+        outState.putBoolean(SaveOperation, hasOperation);
+        outState.putBoolean(SaveCheckBox, onDark);
     }
 
     @Override
-    protected void onRestoreInstanceState(@NonNull Bundle instanceState) {
-        super.onRestoreInstanceState(instanceState);
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        answerView.setText(savedInstanceState.getString(SaveAnswer));
+        textView.setText(savedInstanceState.getString(SaveText));
+        hasPoint = savedInstanceState.getBoolean(SavePoint);
+        hasOperation = savedInstanceState.getBoolean(SaveOperation);
+        onDark = savedInstanceState.getBoolean(SaveCheckBox);
+        checkBox.setChecked(onDark);
     }
 
     private void init(){
         answerView = findViewById(R.id.answer_view);
         textView = findViewById(R.id.text_view);
+        checkBox = findViewById(R.id.checkbox_darkMode);
+        checkBox.setChecked(onDark);
         initButton0ClickListener();
         initButton1ClickListener();
         initButton2ClickListener();
@@ -55,6 +81,15 @@ public class MainActivity extends AppCompatActivity {
         initButtonMulClickListener();
         initButtonSubClickListener();
         initButtonEqualClickListener();
+        initCheckBoxClickListener();
+    }
+
+    private void initCheckBoxClickListener(){
+        checkBox.setOnClickListener(v -> {
+            onDark = !onDark;
+            setAppTheme(onDark);
+            recreate();
+        });
     }
 
     private void initButton0ClickListener(){
@@ -171,4 +206,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setAppTheme(boolean onDark){
+        SharedPreferences sharedPreferences = getSharedPreferences(SaveCheckBox, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(SaveCheckBox, onDark);
+        editor.apply();
+    }
+
+    private boolean getAppTheme(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SaveCheckBox, MODE_PRIVATE);
+        onDark = sharedPreferences.getBoolean(SaveCheckBox, false);
+        return onDark;
+    }
+
 }
